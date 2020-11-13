@@ -1,0 +1,185 @@
+var graphs = [
+    {
+        func: function (x) {
+            return Math.sin(x);
+        },
+        color: '#f00',
+        width: 2,
+        name: 'y = sin x',
+        nameCoor: -8
+    }
+]
+
+window.onload = function () {
+    var WINDOW = {
+        LEFT: -10,
+        BOTTOM: -10,
+        WIDTH: 20,
+        HEIGHT: 20
+    };
+
+    var graph = new Graph({
+        id: 'canvas',
+        width: 800,
+        height: 800,
+        WINDOW: WINDOW,
+        callbacks: { 
+            wheel, 
+            mouseup, 
+            mousedown, 
+            mousemove, 
+            mouseleave 
+        }
+    });
+
+    var ui = new UI({ 
+        callbacks: { 
+            enterFunction 
+        } 
+    });
+
+    var zoomStep = 0.2;
+    var canScroll = false;
+
+    function printFunction(f, color, width) {
+        var x = WINDOW.LEFT;
+        var dx = WINDOW.WIDTH / 1000;
+        while (x < WINDOW.WIDTH + WINDOW.LEFT) {
+            try {
+                graph.line(x, f(x), x + dx, f(x + dx), color, width);
+            } catch (e) { }
+            x += dx;
+        }
+    }
+    function enterFunction(f) {
+        graphs[0].func = f;
+        render();
+    }
+
+    function printOXY() {
+        var size = 0.1;
+        // Ox
+        graph.line(WINDOW.LEFT, 0, WINDOW.WIDTH + WINDOW.LEFT, 0, '#000', 1);
+        // Oy
+        graph.line(0, WINDOW.BOTTOM, 0, WINDOW.HEIGHT + WINDOW.BOTTOM, '#000', 1);
+        // Ox стрелка
+        graph.line(WINDOW.WIDTH + WINDOW.LEFT, 0, WINDOW.WIDTH + WINDOW.LEFT - 1 / 2, size, '#000', 1);
+        graph.line(WINDOW.WIDTH + WINDOW.LEFT, 0, WINDOW.WIDTH + WINDOW.LEFT - 1 / 2, -size, '#000', 1);
+        // Oy стрелка
+        graph.line(0, WINDOW.HEIGHT + WINDOW.BOTTOM, +size, WINDOW.HEIGHT + WINDOW.BOTTOM - 1 / 2, '#000', 1);
+        graph.line(0, WINDOW.HEIGHT + WINDOW.BOTTOM, -size, WINDOW.HEIGHT + WINDOW.BOTTOM - 1 / 2, '#000', 1);
+        
+        // чёрточки OX
+        for (var i = 1; i < WINDOW.WIDTH + WINDOW.LEFT; i++) {
+            graph.line(i, WINDOW.HEIGHT, i, WINDOW.BOTTOM, '#bbb', 1);
+            if (i % 5 == 0) {
+                graph.line(i, -size * 2, i, size * 2, '#000', 2);
+            } else {
+                graph.line(i, -size, i, size, '#000', 1);
+            }
+        }
+        for (var i = -1; i > WINDOW.LEFT; i--) {
+            graph.line(i, WINDOW.HEIGHT, i, WINDOW.BOTTOM, '#bbb', 1);
+            if (i % -5 == 0) {
+                graph.line(i, -size * 2, i, size * 2, '#000', 2);
+            } else {
+                graph.line(i, -size, i, size, '#000', 1);
+            }
+        }
+        //чёрточки OY
+        for (var i = 1; i < WINDOW.HEIGHT + WINDOW.BOTTOM; i++) {
+            graph.line(WINDOW.LEFT, i, WINDOW.WIDTH, i, '#bbb', 1);
+            if (i % 5 == 0) {
+                graph.line(-size * 2, i, size * 2, i, '#000', 2);
+            } else {
+                graph.line(-size, i, size, i, '#000', 1);
+            }
+        }
+        for (var i = -1; i > WINDOW.BOTTOM; i--) {
+            graph.line(WINDOW.LEFT, i, WINDOW.WIDTH, i, '#bbb', 1);
+            if (i % -5 == 0) {
+                graph.line(-size * 2, i, size * 2, i, '#000', 2);
+            } else {
+                graph.line(-size, i, size, i, '#000', 1);
+            }
+        }
+    }
+    
+    function wheel(event) {
+        var delta = (event.wheelDelta > 0) ? - zoomStep : zoomStep;
+        if (WINDOW.WIDTH - zoomStep > 0) {
+            WINDOW.WIDTH += delta;
+            WINDOW.HEIGHT += delta;
+            WINDOW.LEFT -= delta / 2;
+            WINDOW.BOTTOM -= delta / 2;
+        }
+        render();
+    }
+
+    function mousedown() {
+        canScroll = true;
+    }
+    function mouseup() {
+        canScroll = false;
+    }
+    function mouseleave() {
+        canScroll = false;
+    }
+    function mousemove(event) {
+        if (canScroll) {
+            WINDOW.LEFT -= graph.sx(event.movementX);
+            WINDOW.BOTTOM -= graph.sy(event.movementY);
+        }
+        render();
+    }
+
+    function printNumbers() {
+        for (var i = 1; i < WINDOW.WIDTH + WINDOW.LEFT; i++) {
+            graph.number(i, i, 0, 'x');
+        }
+        for (var i = 1; i < Math.abs(WINDOW.LEFT); i++) {
+            graph.number(-i, -i, 0, 'x');
+        }
+        for (var i = 1; i < WINDOW.HEIGHT + WINDOW.BOTTOM; i++) {
+            graph.number(i, 0, i, 'y');
+        }
+        for (var i = 1; i < Math.abs(WINDOW.BOTTOM); i++) {
+            graph.number(-i, 0, -i, 'y');
+        }
+        graph.number('0', 0, 0, '0');
+    }
+
+    function getZero(f, a, b, eps) {
+        if (f(a) * f(b) > 0) {
+            return null;
+        }
+        if (Math.abs(a - b) < eps) {
+            return (a + b) / 2;
+        }
+        var half = (a + b) / 2;
+        if (f(a) * f(half) <= 0) {
+            return getZero(f, a, half, eps);
+        }
+        if (f(half) * f(b) <= 0) {
+            return getZero(f, half, b, eps);
+        }
+    }
+
+    function render() {
+        graph.clear();
+        printOXY();
+        for (var i = 0; i < graphs.length; i++) {
+            printFunction(graphs[i].func, graphs[i].color, graphs[i].width);
+            graph.printFuncNames(graphs[i].name, graphs[i].nameCoor, graphs[i].func, graphs[i].color);
+        }
+        printNumbers();
+        
+        var x = getZero(graphs[0].func, 1, 4, 0.0001);
+        if (x !== null) {
+            graph.point(x, 0, 2);
+        }
+    }
+
+
+    render();
+}
