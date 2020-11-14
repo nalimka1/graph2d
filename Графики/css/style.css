@@ -1,0 +1,24 @@
+#funcs {
+    display: flex;
+    flex-direction: column;
+    width: 150px;
+}
+
+.over {
+    position: absolute;
+    background-color: aquamarine;
+    top: 50px;
+    left: 50px;
+    width: 150px;
+    height: 200px;
+    opacity: 0.6;
+}
+
+.hide {
+    display: none;
+}
+
+.show {
+    display: block;
+}
+

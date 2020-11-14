@@ -1,14 +1,4 @@
-var graphs = [
-    {
-        func: function (x) {
-            return Math.sin(x);
-        },
-        color: '#f00',
-        width: 2,
-        name: 'y = sin x',
-        nameCoor: -8
-    }
-]
+var funcs = [];
 
 window.onload = function () {
     var WINDOW = {
@@ -23,22 +13,26 @@ window.onload = function () {
         width: 800,
         height: 800,
         WINDOW: WINDOW,
-        callbacks: { 
-            wheel, 
-            mouseup, 
-            mousedown, 
-            mousemove, 
-            mouseleave 
+        callbacks: {
+            wheel,
+            mouseup,
+            mousedown,
+            mousemove,
+            mouseleave
         }
     });
 
-    var ui = new UI({ 
-        callbacks: { 
-            enterFunction 
-        } 
+    var ui = new UI({
+        callbacks: {
+            enterFunction,
+            delFunction,
+            enterColor,
+            enterWidth
+
+        }
     });
 
-    var zoomStep = 0.2;
+    var zoomStep = 0.5;
     var canScroll = false;
 
     function printFunction(f, color, width) {
@@ -51,10 +45,33 @@ window.onload = function () {
             x += dx;
         }
     }
-    function enterFunction(f) {
-        graphs[0].func = f;
+    // Создание функций
+    function enterFunction(f, num) {
+        funcs[num] = {
+            f,
+            color: 'red',
+            width: 2
+        }
         render();
     }
+
+    function enterColor(f, num) {
+        funcs[num].color = f;
+        render();
+    }
+
+
+    function enterWidth(f, num) {
+        funcs[num].width = f;
+        render();
+    }
+
+    function delFunction(num) {
+        funcs[num] = null;
+        render();
+    }
+
+
 
     function printOXY() {
         var size = 0.1;
@@ -63,12 +80,12 @@ window.onload = function () {
         // Oy
         graph.line(0, WINDOW.BOTTOM, 0, WINDOW.HEIGHT + WINDOW.BOTTOM, '#000', 1);
         // Ox стрелка
-        graph.line(WINDOW.WIDTH + WINDOW.LEFT, 0, WINDOW.WIDTH + WINDOW.LEFT - 1 / 2, size, '#000', 1);
-        graph.line(WINDOW.WIDTH + WINDOW.LEFT, 0, WINDOW.WIDTH + WINDOW.LEFT - 1 / 2, -size, '#000', 1);
+        graph.line(WINDOW.WIDTH + WINDOW.LEFT, 0, WINDOW.WIDTH + WINDOW.LEFT - 1 / 4, size, '#000', 1);
+        graph.line(WINDOW.WIDTH + WINDOW.LEFT, 0, WINDOW.WIDTH + WINDOW.LEFT - 1 / 4, -size, '#000', 1);
         // Oy стрелка
-        graph.line(0, WINDOW.HEIGHT + WINDOW.BOTTOM, +size, WINDOW.HEIGHT + WINDOW.BOTTOM - 1 / 2, '#000', 1);
-        graph.line(0, WINDOW.HEIGHT + WINDOW.BOTTOM, -size, WINDOW.HEIGHT + WINDOW.BOTTOM - 1 / 2, '#000', 1);
-        
+        graph.line(0, WINDOW.HEIGHT + WINDOW.BOTTOM, +size, WINDOW.HEIGHT + WINDOW.BOTTOM - 1 / 4, '#000', 1);
+        graph.line(0, WINDOW.HEIGHT + WINDOW.BOTTOM, -size, WINDOW.HEIGHT + WINDOW.BOTTOM - 1 / 4, '#000', 1);
+
         // чёрточки OX
         for (var i = 1; i < WINDOW.WIDTH + WINDOW.LEFT; i++) {
             graph.line(i, WINDOW.HEIGHT, i, WINDOW.BOTTOM, '#bbb', 1);
@@ -104,7 +121,7 @@ window.onload = function () {
             }
         }
     }
-    
+
     function wheel(event) {
         var delta = (event.wheelDelta > 0) ? - zoomStep : zoomStep;
         if (WINDOW.WIDTH - zoomStep > 0) {
@@ -112,6 +129,12 @@ window.onload = function () {
             WINDOW.HEIGHT += delta;
             WINDOW.LEFT -= delta / 2;
             WINDOW.BOTTOM -= delta / 2;
+        }
+        if (WINDOW.WIDTH <= zoomStep) {
+            WINDOW.WIDTH -= delta;
+            WINDOW.HEIGHT -= delta;
+            WINDOW.LEFT += delta / 2;
+            WINDOW.BOTTOM += delta / 2;
         }
         render();
     }
@@ -165,19 +188,25 @@ window.onload = function () {
         }
     }
 
+
+
     function render() {
         graph.clear();
         printOXY();
-        for (var i = 0; i < graphs.length; i++) {
-            printFunction(graphs[i].func, graphs[i].color, graphs[i].width);
-            graph.printFuncNames(graphs[i].name, graphs[i].nameCoor, graphs[i].func, graphs[i].color);
+        for (var i = 0; i < funcs.length; i++) {
+            if (funcs[i]) {
+                printFunction(funcs[i].f, funcs[i].color, funcs[i].width);
+                graph.printFuncNames(funcs[i].name, funcs[i].nameCoor, funcs[i].f, funcs[i].color);
+            }
         }
         printNumbers();
-        
-        var x = getZero(graphs[0].func, 1, 4, 0.0001);
+
+        /*
+        var x = getZero(funcs[i].f, 1, 4, 0.0001);
         if (x !== null) {
             graph.point(x, 0, 2);
         }
+        */
     }
 
 
