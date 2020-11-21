@@ -7,12 +7,15 @@ function abs(x) { return Math.abs(x); }
 function UI(options) {
     var callbacks = options.callbacks;
     document.getElementById('addFunction').addEventListener('click', addFunction);
-    document.getElementById('showHide').addEventListener('click', addFunction);
+    document.getElementById('showHide').addEventListener('click', showHide);
     var num = 1;
 
     function showHide() {
         var div = document.querySelector('.over');
         div.classList.toggle('hide');
+        document.addEventListener('click', function () {
+            div.classList.toggle('show');
+        })
     }
     showHide();
 
@@ -51,6 +54,14 @@ function UI(options) {
         divFuncs.appendChild(funcWidth);
         divFuncs.appendChild(button);
         num++;
+
+        
+        var inputDer = document.createElement('input');
+        inputDer.setAttribute('type', 'checkbox');
+        inputDer.setAttribute('id', `derivative${num}`);
+        inputDer.addEventListener('change',function(){
+            callbacks.setDerivative(this.checked, input.dataset.num)
+        })
     }
 
     function keyup() {
@@ -64,24 +75,22 @@ function UI(options) {
     }
 
     function keyupColor() {
-        try {           
+        try {
             var f;
             eval(`f = '${this.value}'`);
-            callbacks.enterColor(f, this.dataset.num);          
+            callbacks.enterColor(f, this.dataset.num);
         } catch (e) {
             console.log(e);
         }
     }
 
     function keyupWidth() {
-        try {           
+        try {
             var f;
             eval(`f = '${this.value}'`);
-            callbacks.enterWidth(f, this.dataset.num);          
+            callbacks.enterWidth(f, this.dataset.num);
         } catch (e) {
             console.log(e);
         }
     }
-
-
 }

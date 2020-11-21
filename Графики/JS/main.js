@@ -27,13 +27,14 @@ window.onload = function () {
             enterFunction,
             delFunction,
             enterColor,
-            enterWidth
-
+            enterWidth,
+            setDerivative
         }
     });
 
     var zoomStep = 0.5;
     var canScroll = false;
+    var mouseX = 0;
 
     function printFunction(f, color, width) {
         var x = WINDOW.LEFT;
@@ -80,11 +81,11 @@ window.onload = function () {
         // Oy
         graph.line(0, WINDOW.BOTTOM, 0, WINDOW.HEIGHT + WINDOW.BOTTOM, '#000', 1);
         // Ox стрелка
-        graph.line(WINDOW.WIDTH + WINDOW.LEFT, 0, WINDOW.WIDTH + WINDOW.LEFT - 1 / 4, size, '#000', 1);
-        graph.line(WINDOW.WIDTH + WINDOW.LEFT, 0, WINDOW.WIDTH + WINDOW.LEFT - 1 / 4, -size, '#000', 1);
+        graph.line(WINDOW.WIDTH + WINDOW.LEFT, 0, WINDOW.WIDTH + WINDOW.LEFT - 1 / 2, size, '#000', 1);
+        graph.line(WINDOW.WIDTH + WINDOW.LEFT, 0, WINDOW.WIDTH + WINDOW.LEFT - 1 / 2, -size, '#000', 1);
         // Oy стрелка
-        graph.line(0, WINDOW.HEIGHT + WINDOW.BOTTOM, +size, WINDOW.HEIGHT + WINDOW.BOTTOM - 1 / 4, '#000', 1);
-        graph.line(0, WINDOW.HEIGHT + WINDOW.BOTTOM, -size, WINDOW.HEIGHT + WINDOW.BOTTOM - 1 / 4, '#000', 1);
+        graph.line(0, WINDOW.HEIGHT + WINDOW.BOTTOM, size, WINDOW.HEIGHT + WINDOW.BOTTOM - 1 / 2, '#000', 1);
+        graph.line(0, WINDOW.HEIGHT + WINDOW.BOTTOM, -size, WINDOW.HEIGHT + WINDOW.BOTTOM - 1 / 2, '#000', 1);
 
         // чёрточки OX
         for (var i = 1; i < WINDOW.WIDTH + WINDOW.LEFT; i++) {
@@ -153,6 +154,7 @@ window.onload = function () {
             WINDOW.LEFT -= graph.sx(event.movementX);
             WINDOW.BOTTOM -= graph.sy(event.movementY);
         }
+        mouseX = graph.sx(event.offsetX) + WINDOW.LEFT;
         render();
     }
 
@@ -188,6 +190,25 @@ window.onload = function () {
         }
     }
 
+    function setDerivative(value, num) {
+        if (funcs[num]) {
+            funcs[num].derivative = value;
+            render();
+        }
+    }
+
+    function setDerivative(f, x0) {
+        return (f(x0 + 0.00001) - f(x0)) / 0.00001;
+    }
+
+    function printDerivative(f, x0) {
+        var der = setDerivative(f,x0);
+        if (der) {
+            var x1=WINDOW.LEFT;
+            var x2 = WINDOW.LEFT + WINDOW.WIDTH;
+            graph.line(x1+x0, der*x1+ f(x0), x2+x0, der*x2+f(x0), '#aca',1,true)
+        }
+    }
 
 
     function render() {
@@ -197,6 +218,10 @@ window.onload = function () {
             if (funcs[i]) {
                 printFunction(funcs[i].f, funcs[i].color, funcs[i].width);
                 graph.printFuncNames(funcs[i].name, funcs[i].nameCoor, funcs[i].f, funcs[i].color);
+                if (funcs[i].derivative) {
+                    printDerivative(funcs[i].f, mouseX)
+                }
+                printFunction();
             }
         }
         printNumbers();
