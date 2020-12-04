@@ -1,27 +1,79 @@
-#funcs {
+.budy{
+    display: flex;
+    flex-direction: row;
+}
+label{
+    font-size: 15px;
+    color: white;
+}
+#over{
+    position: absolute;
+    background: lightskyblue;
+    left: 70px;
+    top: -800px;
+    padding: 40px;
+    opacity: 50%;
+    width: 800px;
+    height: 700px;
+    overflow: hidden;
+    transition: top 0.3s ease;
+}
+.element{
+    margin-top: 10px;
+    background: #e5ff00;
+    padding: 10px;
+    border-radius: 7px;
+}
+#menu{
+    position: absolute;
+    left: 15px;
+    top: 15px;
+    width: 50px;
+    font-size: 15px;
+    font-weight: 700;
+    height: 50px;
+}
+
+.UI{
+    display: flex;
+    flex-direction: column; 
+}
+
+.btns{
+    margin-left: 50px;
+    border-radius: 5px;
+}
+
+input{
+    height: 15px;
+    border-radius: 5px;
+    outline:none;
+    box-shadow: none;
+    border: 1px solid gray;
+    transition: ease-in-out 5s ;
+}
+
+#functions{
     display: flex;
     flex-direction: column;
-    width: 150px;
+    margin-left: 50px;
+    margin-top: 10px;
 }
 
-.over {
-    position: absolute;
-    background-color: aquamarine;
-    top: 50px;
-    left: 50px;
-    width: 150px;
-    height: 200px;
-    opacity: 0.6;
+.inpuut{
+    display: flex;
+    flex-direction: column;
+    margin: 50px;
 }
 
-.hide {
+#firstAs{
+    width: 250px;
+}
+
+#secondAs{
+    width: 250px;
+}
+
+.hide{
     display: none;
-}
-
-.show {
-    display: block;
-}
-
-.function {
-    opacity: 1;
 }

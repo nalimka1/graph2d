@@ -1,27 +1,27 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        
-        <title>Graph 2D</title>
-        <script src="JS/graph.js"></script>
-        <script src="JS/ui.js"></script>
-        <script src="JS/main.js"></script>
-        <link rel="stylesheet" href="css/style.css">
-    </head>
-    <body>
-        <div>
-            <button id="showHide">Показать/Спрятать</button>
-        </div>
+<html lang="en">
+<head>
+    <title>Graph</title>
 
-        <input type="checkbox">Производная</input>
-        <input type="checkbox" id="der1"><label>Производная</label>
-
-        <div class="over show"></div>
-        <canvas id="canvas"></canvas><br>
-
-        <div class="over show function" >
-            <button id="addFunction">Добавить функцию</button>
-            <div id="funcs"><br></div>
-        </div>
-    </body>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="JS/Graph.js"></script>
+    <script src="JS/UI.js"></script>
+    <script src="JS/main.js"></script>
+</head>
+<body>
+   <div class="budy">
+       <button id="menu">></button>
+       <div id="over" class="bounce">
+           <div class="UI">
+                <div class="btns">
+                    <button id="addFunction">Добавить функцию</button>
+                </div>
+                <div id="functions">
+   
+                </div>
+           </div>
+       </div>
+       <canvas width="500" height="500" id="canvas"></canvas>
+    </div>
+</body>
 </html>

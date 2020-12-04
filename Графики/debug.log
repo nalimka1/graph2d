@@ -1,2 +1,26 @@
-[1113/154301.237:ERROR:directory_reader_win.cc(43)] FindFirstFile: Системе не удается найти указанный путь. (0x3)
-[1114/095243.996:ERROR:directory_reader_win.cc(43)] FindFirstFile: Системе не удается найти указанный путь. (0x3)
+[1107/094820.917:ERROR:crash_report_database_win.cc(457)] unexpected header
+[1107/095825.413:ERROR:crash_report_database_win.cc(457)] unexpected header
+[1107/095825.970:ERROR:filesystem_win.cc(129)] GetFileAttributes C:\Users\student\AppData\Local\Google\Chrome\User Data\Crashpad\attachments\a220fa65-5a50-44b3-8f2e-1bb7c7b4c8fd: Системе не удается найти указанный путь. (0x3)
+[1107/095825.970:ERROR:directory_reader_win.cc(43)] FindFirstFile: Системе не удается найти указанный путь. (0x3)
+[1107/095825.970:ERROR:crash_report_database_win.cc(457)] unexpected header
+[1107/095825.970:ERROR:crash_report_database_win.cc(457)] unexpected header
+[1107/100326.114:ERROR:crash_report_database_win.cc(457)] unexpected header
+[1107/101826.322:ERROR:crash_report_database_win.cc(457)] unexpected header
+[1107/103326.531:ERROR:crash_report_database_win.cc(457)] unexpected header
+[1107/104826.546:ERROR:crash_report_database_win.cc(457)] unexpected header
+[1107/110326.561:ERROR:crash_report_database_win.cc(457)] unexpected header
+[1107/111826.562:ERROR:crash_report_database_win.cc(457)] unexpected header
+[1107/111828.757:ERROR:crash_report_database_win.cc(457)] unexpected header
+[1107/112229.938:ERROR:crash_report_database_win.cc(457)] unexpected header
+[1107/113229.655:ERROR:crash_report_database_win.cc(457)] unexpected header
+[1107/113229.655:ERROR:directory_reader_win.cc(43)] FindFirstFile: Системе не удается найти указанный путь. (0x3)
+[1107/113229.655:ERROR:crash_report_database_win.cc(457)] unexpected header
+[1107/113229.655:ERROR:crash_report_database_win.cc(457)] unexpected header
+[1107/113729.656:ERROR:crash_report_database_win.cc(457)] unexpected header
+[1107/114123.045:ERROR:crash_report_database_win.cc(457)] unexpected header
+[1107/114135.358:ERROR:crash_report_database_win.cc(457)] unexpected header
+[1107/114148.701:ERROR:crash_report_database_win.cc(457)] unexpected header
+[1107/114210.451:ERROR:crash_report_database_win.cc(457)] unexpected header
+[1107/114257.959:ERROR:crash_report_database_win.cc(457)] unexpected header
+[1107/115301.203:ERROR:directory_reader_win.cc(43)] FindFirstFile: Системе не удается найти указанный путь. (0x3)
+[1107/120308.609:ERROR:directory_reader_win.cc(43)] FindFirstFile: Системе не удается найти указанный путь. (0x3)
